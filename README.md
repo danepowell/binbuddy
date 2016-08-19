@@ -12,7 +12,7 @@ Follow the steps in the following tutorial to create an AWS Lambda function and 
 Enable the skill and try asking Alexa:
 
 - “Alexa, ask Bin Buddy where to put envelopes?”
-- “Alexa, ask Bin Buddy where apple cores go?”
+- “Alexa, ask Bin Buddy where food scraps go?”
 - “Alexa, ask Bin Buddy what bin to put aluminum cans in?”
 
 ## Known issues
@@ -21,3 +21,6 @@ Alexa’s custom slot types are heavily biased towards the pre-defined terms. Th
 Bin Buddy currently only returns results for San Francisco. I’d love to extend this to all of the other areas covered by Whatbin (most of the Bay Area and Seattle it seems) but Whatbin uses an annoying stateful architecture that makes it difficult to query other cities.
 
 Pull requests are welcome to address any of these or other issues!
+
+## Terms of Use and Privacy
+This application doesn’t collect any personal information. See LICENSE for terms of use.
