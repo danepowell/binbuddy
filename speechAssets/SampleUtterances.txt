@@ -1,0 +1,10 @@
+GetItemIntent where to put {Item}
+GetItemIntent where {Item} go
+GetItemIntent what bin to put {Item} in
+GetItemIntent where {Item} should go
+GetItemIntent what bin {Item} should go in
+GetItemIntent what to do with {Item}
+GetItemIntent what about {Item}
+GetItemIntent where do I put {Item}
+
+HelpIntent help

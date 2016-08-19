@@ -1,0 +1,17 @@
+{
+  "intents": [
+    {
+      "intent": "GetItemIntent",
+      "slots": [
+        {
+          "name": "Item",
+          "type": "LIST_OF_ITEMS"
+        }
+      ]
+    },
+    {
+      "intent": "HelpIntent",
+      "slots": []
+    }
+  ]
+}
