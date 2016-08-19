@@ -4,6 +4,7 @@ Bin Buddy for Alexa tells you where to put trash using Whatbin.com. This project
 ## How to use (developers)
 Follow the steps in the following tutorial to create an AWS Lambda function and Alexa Skill (I am not affiliated with this site): http://tobuildsomething.com/2015/08/14/Amazon-Echo-Alexa-Tutorial-The-Definitive-Guide-to-Coding-an-Alexa-Skill/
 
+- Run `npm install` in the `src` directory to install the Node dependencies.
 - Upload assets in the `src` directory to your AWS Lambda function.
 - Copy the speech assets into your Alexa Skill.
 - (optional) use `create_values.js` to update the list of items using values from Whatbin.
@@ -19,6 +20,8 @@ Enable the skill and try asking Alexa:
 Alexa’s custom slot types are heavily biased towards the pre-defined terms. Thus, the “search” functionality on Whatbin will almost never be used, since Alexa will either choose a known term or abort. I tried using AMAZON.LITERAL as the slot type but Alexa then failed most requests.
 
 Bin Buddy currently only returns results for San Francisco. I’d love to extend this to all of the other areas covered by Whatbin (most of the Bay Area and Seattle it seems) but Whatbin uses an annoying stateful architecture that makes it difficult to query other cities.
+
+I also see that there's now an Alexa Skill node package. It might be better to rely on this rather than the static AlexaSkill.js SDK.
 
 Pull requests are welcome to address any of these or other issues!
 

@@ -1,15 +1,15 @@
 console.log("Initializing");
 
-var http       = require('http'),
-    AlexaSkill = require('./AlexaSkill'),
-    APP_ID     = process.env.APP_ID;
+var http = require('http');
+var AlexaSkill = require('./AlexaSkill');
+var APP_ID = process.env.APP_ID;
 
-var url = function(item){
+var url = function(item) {
   item = item.replace(' ', '+');
   return 'http://whatbin.com/index.php?r=site%2Frequest&search=' + escape(item) + '&yt0=Search';
 };
 
-var getHtmlFromWhatbin = function(item, callback){
+var getHtmlFromWhatbin = function(item, callback) {
   http.get(url(item), function(res){
     var body = '';
 
@@ -27,9 +27,14 @@ var getHtmlFromWhatbin = function(item, callback){
   });
 };
 
-var handleItemRequest = function(intent, session, response){
+var handleItemRequest = function(intent, session, response) {
   var itemName = intent.slots.Item.value;
   console.log("Handling item request for " + itemName + "...");
+
+  if (!itemName) {
+    response.ask("Sorry, I didn't hear an item name. Ask me where to put an item.");
+    return;
+  }
 
   getHtmlFromWhatbin(itemName, function(data){
     var re = data.match(/<h2>\s*?(.*?)\s*?<\/h2>/g);
@@ -50,34 +55,43 @@ var handleItemRequest = function(intent, session, response){
   });
 };
 
-var Item = function(){
+var Item = function() {
   AlexaSkill.call(this, APP_ID);
 };
 
 Item.prototype = Object.create(AlexaSkill.prototype);
 Item.prototype.constructor = Item;
 
-Item.prototype.eventHandlers.onSessionStarted = function(sessionStartedRequest, session){
+Item.prototype.eventHandlers.onSessionStarted = function(sessionStartedRequest, session) {
   console.log("onSessionStarted requestId: " + sessionStartedRequest.requestId + ", sessionId: " + session.sessionId);
 };
 
-Item.prototype.eventHandlers.onLaunch = function(launchRequest, session, response){
-  var output = 'Welcome to Bin Buddy. Ask me where to put any item.';
-  var reprompt = 'You can ask me where to put any item. How can I help?';
-
+function getHelp(response) {
+  var output = 'Bin Buddy can tell you where to put any item.';
+  var reprompt = 'Ask me where to put an item.';
   response.ask(output, reprompt);
+}
 
+Item.prototype.eventHandlers.onLaunch = function(launchRequest, session, response) {
+  getHelp(response);
   console.log("onLaunch requestId: " + launchRequest.requestId + ", sessionId: " + session.sessionId);
 };
 
 Item.prototype.intentHandlers = {
-  GetItemIntent: function(intent, session, response){
+  "GetItemIntent": function(intent, session, response) {
     handleItemRequest(intent, session, response);
   },
 
-  HelpIntent: function(intent, session, response){
-    var speechOutput = 'You can ask where to put items.';
-    response.ask(speechOutput);
+  "HelpIntent": function(intent, session, response) {
+    getHelp(response);
+  },
+
+  "AMAZON.CancelIntent": function(intent, session, response) {
+    response.tell('Goodbye.');
+  },
+
+  "AMAZON.StopIntent": function(intent, session, response) {
+    response.tell('Goodbye.');
   }
 };
 
