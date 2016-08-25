@@ -1,4 +1,4 @@
-console.log("Initializing");
+console.log("Initializing...");
 
 var http = require('http');
 var AlexaSkill = require('./AlexaSkill');
@@ -19,7 +19,7 @@ var getHtmlFromWhatbin = function(item, callback) {
 
     res.on('end', function(){
       var result = body;
-      callback(result);
+      callback(res.statusCode, result);
     });
 
   }).on('error', function(e){
@@ -36,18 +36,23 @@ var handleItemRequest = function(intent, session, response) {
     return;
   }
 
-  getHtmlFromWhatbin(itemName, function(data){
-    var re = data.match(/<h2>\s*?(.*?)\s*?<\/h2>/g);
-    var message = re[0];
-    message = message.replace(/<h2>/g, '');
-    message = message.replace(/<\/h2>/g, '');
-    message = message.replace(/^\s+|\s+$/g, '');
-    if (message.indexOf("Search results for") !== -1){
-      var regex = /search=(.*?)">[A-Z]/g;
-      var item;
-      message = "I can tell you about the following items: ";
-      while (item = regex.exec(data)) {
-        message = message + item[1] + ",";
+  getHtmlFromWhatbin(itemName, function(statusCode, data){
+    if (statusCode == 302) {
+      message = "Sorry, I don't know what to do with " + itemName;
+    }
+    else {
+      var re = data.match(/<h2>\s*?(.*?)\s*?<\/h2>/g);
+      var message = re[0];
+      message = message.replace(/<h2>/g, '');
+      message = message.replace(/<\/h2>/g, '');
+      message = message.replace(/^\s+|\s+$/g, '');
+      if (message.indexOf("Search results for") !== -1){
+        var regex = /search=(.*?)">[A-Z]/g;
+        var item;
+        message = "I can tell you about the following items: ";
+        while (item = regex.exec(data)) {
+          message = message + item[1] + ",";
+        }
       }
     }
     console.log(message);
