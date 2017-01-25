@@ -36,7 +36,7 @@ var handleItemRequest = function(intent, session, response) {
     return;
   }
 
-  getHtmlFromWhatbin(itemName, function(statusCode, data){
+  var callback = function(statusCode, data){
     if (statusCode == 302) {
       message = "Sorry, I don't know what to do with " + itemName;
     }
@@ -49,15 +49,34 @@ var handleItemRequest = function(intent, session, response) {
       if (message.indexOf("Search results for") !== -1){
         var regex = /search=(.*?)">[A-Z]/g;
         var item;
-        message = "I can tell you about the following items: ";
+        var items = [];
         while (item = regex.exec(data)) {
-          message = message + item[1] + ",";
+          items.push(item[1]);
+        }
+        if (items.length == 1) {
+          getHtmlFromWhatbin(items[0], callback);
+          return;
+        }
+        else {
+          message = "I don't know what to do with " + itemName + ", but try asking about ";
+          for (var i = 0, len = items.length; i < len; i++) {
+            message = message + items[i];
+            if (i == len - 2) {
+              message = message + " or ";
+            }
+            else if (i < len - 2) {
+              message = message + ", ";
+            }
+          }
+          message = message + ".";
         }
       }
     }
     console.log(message);
     response.tellWithCard(message, "Bin Buddy", message);
-  });
+  }
+
+  getHtmlFromWhatbin(itemName, callback);
 };
 
 var Item = function() {
