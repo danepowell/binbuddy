@@ -78,7 +78,7 @@ const GetItemIntentHandler = {
             });
         let speechText = "Sorry, I don't know where to put " + itemName;
         if (binName != 'unknown') {
-            const speechText = 'Please put ' + itemName + ' in the ' + binName + ' bin';
+            speechText = 'Please put ' + itemName + ' in the ' + binName + ' bin';
         }
         return handlerInput.responseBuilder
             .speak(speechText)
