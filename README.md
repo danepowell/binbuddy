@@ -28,4 +28,4 @@ I also need to clean up / refresh the speech model following the switch to Recol
 Pull requests are welcome to address any of these or other issues!
 
 ## Terms of Use and Privacy
-This application doesn’t collect any personal information. See LICENSE for terms of use. I only request that you don't publish live skills based on this code that would directly compete with Bin Buddy. If you think you can improve on Bin Buddy, please submit a pull request!
+This application doesn’t collect any personal information. Feel free to reuse any part of it for non-commercial purposes. I only request that you don't publish live skills based on this code that would directly compete with Bin Buddy. If you think you can improve on Bin Buddy, please submit a pull request!
